@@ -134,6 +134,9 @@ function recalculateResult(advanced=false) {
         }
     });
 
+    $("#idBtnNext1").prop('disabled', true);
+    $("#idBtnNext2").prop('disabled', true);
+
     fetch(calcurl, {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
         mode: 'cors', // no-cors, *cors, same-origin
@@ -166,8 +169,20 @@ function recalculateResult(advanced=false) {
         
     }).catch((error) => {
         console.error('Error:', error);
-        alert("Issue while fetching result from the server, please retry. If it persists check the console log for error data")
-    });
+        $('#modalerrortext').html("<p>Issue while fetching result from the server, please retry.</p><p>If the issue persists, the backend might be experiencing issues</p><p>"+error+"</p>")
+        $('#modalerror').modal('show')
+        window.dbresult.sections.forEach(section => {
+            section.data.sub.forEach(sub => {
+                sub.val = 0
+            });
+            if(section.data.total !== undefined) {
+                section.data.total.val = 0
+            }
+        });
+    }).finally(()=> {
+        $("#idBtnNext1").prop('disabled', false);
+        $("#idBtnNext2").prop('disabled', false);
+    })
 
 
     
