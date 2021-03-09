@@ -1,4 +1,8 @@
-window.resturl = "http://localhost:4001"
+window.resturl = window.location.protocol+"//localhost:4001"
+
+//if served over https, fetch over https
+
+
 
 
 // navigation between steps
