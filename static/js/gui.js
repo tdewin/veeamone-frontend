@@ -146,16 +146,18 @@ function recalculateResult(advanced=false) {
         referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
         body: JSON.stringify(dataIn) // body data type must match "Content-Type" header
     }).then(response => response.json()).then(data => {
+        const fnRound = (text) => Math.round((parseFloat(text)*100))/100
+
         window.dbresult.sections.forEach(section => {
             section.data.sub.forEach(sub => {
                 if (sub.id in data) {
-                    sub.val = data[sub.id]
+                    sub.val = fnRound(data[sub.id])
                 }
             });
             if(section.data.total !== undefined) {
                 const totalid = section.data.total.id
                 if (totalid in data) {
-                    section.data.total.val = data[totalid]
+                    section.data.total.val = fnRound(data[totalid])
                 }
             }
         });
