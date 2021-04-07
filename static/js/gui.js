@@ -4,7 +4,6 @@ window.resturl = window.location.protocol+"//localhost:4001"
 
 
 
-
 // navigation between steps
 function advancedEnabled() {
     return $("#idAdvanced").is(':checked')
@@ -29,6 +28,7 @@ $("#idAdvanced").click(()=> {
 })
 
 
+//        {"id":"historicPerfData","valfield": 12,"label":"Historic Perf Data in Months"},
 
 //rendering vue advanced parameters
 window.advancedParameters = new Vue({
@@ -45,13 +45,12 @@ window.advancedParameters = new Vue({
         {"id":"avNumGDiskVm","valfield": 0,"label":"Avg Num Global Disks Per VM"},
         {"id":"avSdPerHost","valfield": 2,"label":"Avg Storage Adapter Per Host"},
         {"id":"avSpPerHost","valfield": 2,"label":"Avg Storage Path Per Host"},
-        {"id":"historicPerfData","valfield": 12,"label":"Historic Perf Data in Months"},
         {"id":"eventsHistory","valfield": 12,"label":"Event History Data in Months"},
-        {"id":"vmThreshold","valfield": 1500,"label":"VM Threshold Adv Scaling"},
+        {"id":"vmThreashold","valfield": 1500,"label":"VM Threshold Adv Scaling"},
         {"id":"resourcePoolQty","valfield": 2,"label":"Resource Pools"},
         {"id":"clusterQty","valfield": 1,"label":"Clusters"},
         {"id":"vappQty","valfield": 4,"label":"vApps"},
-        {"id":"datastoreQty","valfield": 1,"label":"Datastores"},
+        {"id":"datastoreQty","valfield": 1,"label":"Datastores"}
     ] },
   })
 
@@ -114,10 +113,11 @@ function downloadDB() {
 function recalculateResult(advanced=false) {
     console.log("recalculating")
 
-    var calcurl = window.resturl+"/SimpleCal"
+    var calcurl = window.resturl+"/simpleCal"
     var dataIn = {
-        "vmQty": $("#idVM").val(),
-        "hostQty": $("#idHost").val()
+        "vmQty": parseInt($("#idVM").val()),
+        "hostQty": parseInt($("#idHost").val()),
+        "historyMonths": parseInt($("#idHistory").val())
     }
     if (advanced) {
         advparams = {}
@@ -125,7 +125,9 @@ function recalculateResult(advanced=false) {
             advparams[p.id] = parseInt(p.valfield)
         });
         dataIn["settings"] = advparams
-        calcurl = window.resturl+"/AdvancedCal"
+        calcurl = window.resturl+"/advancedCal"
+    } else {
+        
     }
 
     const u = "Updating ..."
@@ -146,9 +148,6 @@ function recalculateResult(advanced=false) {
         mode: 'cors', // no-cors, *cors, same-origin
         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
         credentials: 'same-origin', // include, *same-origin, omit
-        headers: {
-          'Content-Type': 'application/json'
-        },
         redirect: 'follow', // manual, *follow, error
         referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
         body: JSON.stringify(dataIn) // body data type must match "Content-Type" header
@@ -195,6 +194,7 @@ function recalculateResult(advanced=false) {
 
 $("#idBtnNext1").click(function() {
     if (advancedEnabled()) {
+        $("#eventsHistory").val(parseInt($("#idHistory").val()))
         scrollDiv("#idDivAdvanced")
     } else {
         //if not advanced, calculate the result
