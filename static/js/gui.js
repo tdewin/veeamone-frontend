@@ -4,6 +4,7 @@ window.resturl = "http://localhost"
 
 
 
+
 // navigation between steps
 function advancedEnabled() {
     return $("#idAdvanced").is(':checked')
@@ -100,7 +101,19 @@ function downloadDB() {
             ln.push([section.data.total.label,section.data.total.val].join("\t"))
         }
         ln.push("")
+        
     });
+    ln.push("")
+    ln.push("")
+    ln.push("Calculation based on input")
+    ln.push(["VMs",$("#idVM").val()].join("\t"))
+    ln.push(["Host",$("#idHost").val()].join("\t"))
+    ln.push(["History",$("#idHistory").val()].join("\t"))
+    window.advancedParameters.advancedFields.forEach(f => {
+        ln.push([f.label,f.valfield].join("\t"))
+    })
+
+
     $('#dbdownload').prop("href","data:text/plain,"+encodeURI(ln.join("\n")))
 }
 
