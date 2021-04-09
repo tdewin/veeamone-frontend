@@ -105,16 +105,27 @@ function downloadDB() {
     });
     ln.push("")
     ln.push("")
+    var vms = $("#idVM").val()
+    var host = $("#idHost").val()
+    var history = $("#idHistory").val()
+
     ln.push("Calculation based on input")
-    ln.push(["VMs",$("#idVM").val()].join("\t"))
-    ln.push(["Host",$("#idHost").val()].join("\t"))
-    ln.push(["History",$("#idHistory").val()].join("\t"))
+    ln.push(["VMs",vms].join("\t"))
+    ln.push(["Host",host].join("\t"))
+    ln.push(["History",history].join("\t"))
     window.advancedParameters.advancedFields.forEach(f => {
         ln.push([f.label,f.valfield].join("\t"))
     })
 
 
+    //leading zero minifunction
+    var lz = (i) =>  i < 10?"0"+i:i 
+    var d = new Date()
+    var datestamp = [d.getFullYear(), lz((d.getMonth() + 1)), lz(d.getDate()),lz(d.getHours()),lz(d.getMinutes())].join('');
+    var inputstamp = [vms,host,history].join('-')
+    $('#dbdownload').prop("download","veeambp-one-"+datestamp+"-"+inputstamp+".txt")
     $('#dbdownload').prop("href","data:text/plain,"+encodeURI(ln.join("\n")))
+    
 }
 
 function getDefaults() {
