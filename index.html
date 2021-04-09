@@ -20,7 +20,7 @@
                     <h1 class="title">Veeam ONE<br>Database<br>Estimator</h1>
                 </div>
                 <div class="m-4">
-This was created to give a basic storage understanding of what will be required to build a Veema One Database, we claim no accuracy of the data output as this tool is an indicator only of what this could look like in production.<br><br>
+This was created to give a basic storage understanding of what will be required to build a Veeam One Database. We claim no accuracy of the data output as this tool is an indicator only of what this could look like in production.<br><br>
 
 There are many factors which can influence the sizing of Veeam One and this is a simplified combination.<br><br>
 
@@ -32,19 +32,19 @@ If your looking to build and implement a Veeam One Server contact your local Sys
                     <div class="form-group row">
                       <label for="idVM" class="col-sm-3 col-form-label">VM</label>
                       <div class="col-sm-3">
-                        <input type="text" class="form-control" id="idVM" value="1000">
+                        <input  class="form-control" id="idVM" value="1000" type="number">
                       </div>
                     </div>
                     <div class="form-group row">
                         <label for="idHost" class="col-sm-3 col-form-label">Hosts</label>
                         <div class="col-sm-3">
-                          <input type="text" class="form-control" id="idHost" value="50">
+                          <input class="form-control" id="idHost" value="50" type="number">
                         </div>
                     </div>
                     <div class="form-group row" id="idHistoryDiv">
                       <label for="idHistory" class="col-sm-3 col-form-label">History in Months</label>
                       <div class="col-sm-3">
-                        <input type="text" class="form-control" id="idHistory" value="12">
+                        <input  class="form-control" id="idHistory" value="12" type="number">
                       </div>
                   </div>
                     <div class="form-group row">
@@ -72,8 +72,11 @@ If your looking to build and implement a Veeam One Server contact your local Sys
                       <div class="row m-0" >
                           <div class="col-xl-6" v-for="(advancedField, index) in advancedFields">
                             <div class="form-row mb-2">
-                              <div class="col-xl-6"><label v-bind:for="advancedField.id">{{advancedField.label}}</label></div>
-                              <div class="col-xl-6"><input type="text" class="form-control" v-bind:id="advancedField.id" v-model="advancedField.valfield"></div>
+                              <div class="col-xl-8">
+                                <label v-bind:for="advancedField.id">{{advancedField.label}}</label>
+                                <button v-if="advancedField.info" type="button" class="btn btn-light rounded-circle float-right" data-toggle="tooltip" data-placement="top" v-bind:title="advancedField.info">&nbsp;?&nbsp;</button>
+                              </div>
+                              <div class="col-xl-4"><input class="form-control" v-bind:id="advancedField.id" v-model="advancedField.valfield" type="number"></div>
                             </div>
                           </div>
                       </div>
@@ -87,7 +90,7 @@ If your looking to build and implement a Veeam One Server contact your local Sys
             </div>
             <div class="col-lg-1"></div>
         </div>
-        <div class="row bg-veeam-light-2 align-items-center" id="idDivResult">
+        <div class="row bg-veeam-light-2 align-items-center" style="display: none;" id="idDivResult">
               <div class="col-lg-1"></div>
               <div class="col-lg-4  rounded border border-light" id="dbresult">
                       <table class="table table-borderless">
